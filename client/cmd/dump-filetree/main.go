@@ -1,23 +1,25 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/jiikko/filetree-meta-manager/client/internal"
 )
 
 func main() {
-	commandName := "filetree-meta-manager"
+	outputJSON := flag.Bool("json", false, "JSON形式で出力する")
+	flag.Parse()
 
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: " + commandName + " [directory path]")
+	if len(flag.Args()) < 1 {
+		fmt.Println("ディレクトリパスを指定してください")
 		return
 	}
 
-	directoryPath := os.Args[1]
+	directoryPath := flag.Arg(0)
 	if _, err := os.Stat(directoryPath); os.IsNotExist(err) {
 		fmt.Println("ディレクトリが存在しません:", directoryPath)
 		return
@@ -28,19 +30,39 @@ func main() {
 		fmt.Println("Failed to retrieve file tree from " + directoryPath)
 		return
 	} else {
-		printFileTree(fileTree, "")
+		if *outputJSON {
+			modifyFileTree(fileTree)
+			printFileTreeJSON(fileTree)
+		} else {
+			modifyFileTree(fileTree)
+			printFileTree(fileTree, "")
+		}
 	}
-
 }
 
-// printFileTree はファイルツリーを再帰的に表示します
 func printFileTree(node *internal.FileInfo, indent string) {
 	if node.IsDir {
-		fmt.Printf("%s%s (Directory)\n", indent, filepath.Base(node.Path))
+		fmt.Printf("%s%s (Directory)\n", indent, node.Path)
 	} else {
-		fmt.Printf("%s%s, %s, %s\n", indent, filepath.Base(node.Path), node.MD5Checksum, node.CreateTime.Format(time.RFC3339))
+		fmt.Printf("%s%s, %s, %s\n", indent, node.Path, node.MD5Checksum, node.CreateTime.Format(time.RFC3339))
 	}
 	for _, child := range node.Children {
 		printFileTree(child, indent+"  ")
 	}
+}
+func modifyFileTree(node *internal.FileInfo) {
+	node.Path = node.PathWithoutDir()
+	for _, child := range node.Children {
+		modifyFileTree(child)
+	}
+}
+
+func printFileTreeJSON(node *internal.FileInfo) {
+
+	jsonData, err := json.MarshalIndent(node, "", "  ")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println(string(jsonData))
 }

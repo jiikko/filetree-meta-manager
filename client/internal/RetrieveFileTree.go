@@ -18,6 +18,10 @@ type FileInfo struct {
 	Children    []*FileInfo
 }
 
+func (f *FileInfo) PathWithoutDir() string {
+	return filepath.Base(f.Path)
+}
+
 func calculateMD5(filePath string) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
