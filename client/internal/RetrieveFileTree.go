@@ -11,10 +11,10 @@ import (
 )
 
 type FileInfo struct {
-	Path        string
-	CreateTime  time.Time
-	MD5Checksum string
-	Children    []*FileInfo
+	Path        string      `json:"path"`
+	CreateTime  time.Time   `json:"created_at"`
+	MD5Checksum string      `json:"md5hash"`
+	Children    []*FileInfo `json:"children"`
 }
 
 func (f *FileInfo) PathWithoutDir() string {
