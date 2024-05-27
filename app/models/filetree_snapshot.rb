@@ -1,0 +1,2 @@
+class FiletreeSnapshot < ApplicationRecord
+end
