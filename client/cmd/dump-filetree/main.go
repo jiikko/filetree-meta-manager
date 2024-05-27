@@ -41,7 +41,7 @@ func main() {
 }
 
 func printFileTree(node *internal.FileInfo, indent string) {
-	if node.IsDir {
+	if node.IsDir() {
 		fmt.Printf("%s%s (Directory)\n", indent, node.Path)
 	} else {
 		fmt.Printf("%s%s, %s, %s\n", indent, node.Path, node.MD5Checksum, node.CreateTime.Format(time.RFC3339))

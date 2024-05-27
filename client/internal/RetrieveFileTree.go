@@ -14,12 +14,15 @@ type FileInfo struct {
 	Path        string
 	CreateTime  time.Time
 	MD5Checksum string
-	IsDir       bool
 	Children    []*FileInfo
 }
 
 func (f *FileInfo) PathWithoutDir() string {
 	return filepath.Base(f.Path)
+}
+
+func (f *FileInfo) IsDir() bool {
+	return f.MD5Checksum == ""
 }
 
 func calculateMD5(filePath string) (string, error) {
@@ -42,7 +45,6 @@ func RetrieveFileTree(directoryPath string) (*FileInfo, error) {
 
 	root := &FileInfo{
 		Path:       directoryPath,
-		IsDir:      true,
 		Children:   []*FileInfo{},
 		CreateTime: time.Now(),
 	}
@@ -63,12 +65,10 @@ func RetrieveFileTree(directoryPath string) (*FileInfo, error) {
 				return err
 			}
 		}
-
 		fileInfo := &FileInfo{
 			Path:        path,
-			CreateTime:  info.ModTime(),
+			CreateTime:  info.ModTime().Truncate(time.Second),
 			MD5Checksum: md5Checksum,
-			IsDir:       info.IsDir(),
 			Children:    []*FileInfo{},
 		}
 
@@ -92,7 +92,7 @@ func addToParent(node *FileInfo, parentDir string, fileInfo *FileInfo) bool {
 	}
 
 	for _, child := range node.Children {
-		if child.IsDir {
+		if child.IsDir() {
 			if addToParent(child, parentDir, fileInfo) {
 				return true
 			}
