@@ -59,7 +59,7 @@ func modifyFileTree(node *internal.FileInfo) {
 
 func printFileTreeJSON(node *internal.FileInfo) {
 
-	jsonData, err := json.MarshalIndent(node, "", "  ")
+	jsonData, err := json.Marshal(node)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
