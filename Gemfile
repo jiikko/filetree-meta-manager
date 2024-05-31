@@ -13,8 +13,8 @@ gem 'turbo-rails'
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'rspec-rails'
 end
 
 group :test do
-  gem 'rspec-rails'
 end
