@@ -7,5 +7,6 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
 
-  has_many :devices
+  has_many :devices, dependent: :destroy
+  has_many :api_keys, dependent: :destroy
 end

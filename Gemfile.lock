@@ -257,6 +257,8 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (0.13.0)
+    uuid7 (0.2.0)
+      zeitwerk (~> 2.4)
     version_gem (1.1.4)
     webrick (1.8.1)
     websocket-driver (0.7.6)
@@ -284,6 +286,7 @@ DEPENDENCIES
   stimulus-rails
   trilogy
   turbo-rails
+  uuid7
 
 RUBY VERSION
    ruby 3.2.2p53

@@ -14,7 +14,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
+    result = ApplicationRecord.transaction do
+      @user.save! && @user.api_keys.create!
+    end
+
+    if result
       redirect_to @user, notice: 'User was successfully created.'
     else
       render :new, status: :unprocessable_entity
