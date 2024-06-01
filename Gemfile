@@ -10,6 +10,7 @@ gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'trilogy'
 gem 'turbo-rails'
+gem 'sorcery'
 
 group :development, :test do
   gem 'pry-rails'
