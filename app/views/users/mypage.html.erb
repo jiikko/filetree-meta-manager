@@ -2,6 +2,8 @@
 
 <%= render @user %>
 
+<h2>API Key</h2>
+
 <table border="1">
   <tr>
     <th>作成日</th>
@@ -9,8 +11,34 @@
   </tr>
   <% @user.api_keys.each do |api_key| %>
     <tr>
-      <td><%= api_key.created_at %></td>
+      <td><%= l api_key.created_at, format: :ja %></td>
       <td><%= api_key.value %></td>
+    </tr>
+  <% end %>
+</table>
+
+
+<h2>Device</h2>
+
+<table border="1">
+  <tr>
+    <th>名前</th>
+    <th>スナップショット</th>
+  </tr>
+  <% @user.devices.each do |device| %>
+    <tr>
+      <td><%= device.name %></td>
+      <td>
+        <ul>
+          <% device.filetree_snapshots.order(created_at: :desc).each do |snapshot| %>
+            <li>
+              <%= link_to snapshot do %>
+                <%= l(snapshot.created_at, format: :ja) %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </td>
     </tr>
   <% end %>
 </table>

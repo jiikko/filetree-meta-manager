@@ -2,7 +2,7 @@ class Api::V1::FiletreesController < Api::BaseController
   class UnsetDeviceError < StandardError; end
 
   def create
-    raise 'need device name' if (device_name = params[:device]).blank?
+    raise(UnsetDeviceError, 'need device name') if (device_name = params[:device]).blank?
 
     ApplicationRecord.transaction do
       device = current_user.devices.find_or_create_by!(name: device_name)
