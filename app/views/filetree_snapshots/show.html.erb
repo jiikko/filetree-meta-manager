@@ -1,2 +1,64 @@
 <h2><%= @device.name %></h2>
 <%= l @filetree_snapshot.created_at, format: :ja %>
+
+<hr>
+
+<button id="open-all">全てを開く</button>
+<button id="close-all">全てを閉じる</button>
+
+<div id="filetree">
+  <%= render_filetree(@filetree_snapshot.data) %>
+</div>
+
+
+<style>
+#filetree ul {
+  list-style-type: none;
+}
+
+#filetree .directory > ul {
+  display: none;
+}
+
+#filetree .directory.open > ul {
+  display: block;
+}
+
+#filetree .toggle {
+  cursor: pointer;
+  margin-right: 5px;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("#filetree .directory > .toggle").forEach(function(toggle) {
+    toggle.addEventListener("click", function(event) {
+      event.stopPropagation();
+
+      const directory = toggle.parentElement;
+      directory.classList.toggle("open");
+
+      if (directory.classList.contains("open")) {
+        toggle.textContent = '[-]';
+      } else {
+        toggle.textContent = '[+]';
+      }
+    });
+  });
+});
+
+document.getElementById("open-all").addEventListener("click", function() {
+  document.querySelectorAll("#filetree .directory").forEach(function(directory) {
+    directory.classList.add("open");
+    directory.querySelector('.toggle').textContent = '[-]';
+  });
+});
+
+document.getElementById("close-all").addEventListener("click", function() {
+  document.querySelectorAll("#filetree .directory").forEach(function(directory) {
+    directory.classList.remove("open");
+    directory.querySelector('.toggle').textContent = '[+]';
+  });
+});
+</script>

@@ -1,0 +1,8 @@
+#!/bin/bash -e
+# $1: Authorization
+
+curl -X POST 'http://localhost:3000/api/v1/filetrees' \
+  -H 'Accept: application/json'  \
+  -H 'Content-Type: application/json' \
+  -H "Authorization: $1" \
+  -d '{"path":"tmp","created_at":"2024-06-02T18:06:38.254135+09:00","md5hash":"","children":[{"path":"001","created_at":"2024-05-26T19:03:24+09:00","md5hash":"d41d8cd98f00b204e9800998ecf8427e","children":[]},{"path":"002","created_at":"2024-05-26T19:03:25+09:00","md5hash":"d41d8cd98f00b204e9800998ecf8427e","children":[]},{"path":"dir","created_at":"2024-05-26T23:58:40+09:00","md5hash":"","children":[{"path":"001","created_at":"2024-05-26T23:05:47+09:00","md5hash":"d41d8cd98f00b204e9800998ecf8427e","children":[]},{"path":"child","created_at":"2024-05-26T23:58:45+09:00","md5hash":"","children":[{"path":"foo","created_at":"2024-05-27T00:03:14+09:00","md5hash":"","children":[{"path":"bar","created_at":"2024-05-27T00:03:14+09:00","md5hash":"b026324c6904b2a9cb4b88d6d61c81d1","children":[]}]}]}]}], "device": "8TB"}'
