@@ -5,13 +5,21 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/jiikko/filetree-meta-manager/client/internal"
+	"gopkg.in/yaml.v2"
 )
 
+type Config struct {
+	url    string `yaml:"url"`
+	apiKey string `yaml:"api_key"`
+}
+
 func main() {
-	outputJSON := flag.Bool("json", false, "JSON形式で出力する")
+	outputJSON := flag.Bool("json", true, "JSON形式で出力する")
+
 	flag.Parse()
 
 	if len(flag.Args()) < 1 {
@@ -24,6 +32,12 @@ func main() {
 		fmt.Println("ディレクトリが存在しません:", directoryPath)
 		return
 	}
+	config, err := loadConfig(directoryPath)
+	if err != nil {
+		fmt.Println("設定ファイルの読み込みに失敗しました:", err)
+		return
+	}
+	fmt.Println("URL:", config.url)
 
 	fileTree, err := internal.RetrieveFileTree(directoryPath)
 	if err != nil {
@@ -58,11 +72,28 @@ func modifyFileTree(node *internal.FileInfo) {
 }
 
 func printFileTreeJSON(node *internal.FileInfo) {
-
 	jsonData, err := json.Marshal(node)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 	fmt.Println(string(jsonData))
+}
+
+func loadConfig(baseDir string) (*Config, error) {
+	configPath := filepath.Join(baseDir, "filetree_manager_config.yaml")
+	file, err := os.Open(configPath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var config Config
+	err = yaml.NewDecoder(file).Decode(&config)
+	if err != nil {
+		fmt.Println("設定ファイルのパースに失敗しました:", err)
+		return nil, err
+	}
+
+	return &config, nil
 }
