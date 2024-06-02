@@ -1,3 +1,16 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @user %>
+
+<table border="1">
+  <tr>
+    <th>作成日</th>
+    <th>API Key</th>
+  </tr>
+  <% @user.api_keys.each do |api_key| %>
+    <tr>
+      <td><%= api_key.created_at %></td>
+      <td><%= api_key.value %></td>
+    </tr>
+  <% end %>
+</table>
