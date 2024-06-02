@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :require_login, only: %i[new create mypage]
+  skip_before_action :require_login, only: %i[new create]
 
   def mypage
     @user = current_user
@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     end
 
     if result
+      login(params[:email], params[:password])
       redirect_to mypage_path, notice: 'User was successfully created.'
     else
       render :new, status: :unprocessable_entity

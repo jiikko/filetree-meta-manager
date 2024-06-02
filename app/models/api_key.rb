@@ -4,6 +4,6 @@ class ApiKey < ApplicationRecord
   before_create :generate_token
 
   def generate_token
-    self.value ||= UUID7.generate
+    self.value ||= ::UUID7.generate
   end
 end

@@ -29,13 +29,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
 
   create_table "filetree_snapshots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "data", null: false
-    t.bigint "user_id", null: false
     t.bigint "device_id", null: false
     t.integer "revision", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["device_id", "revision"], name: "index_filetree_snapshots_on_device_id_and_revision", unique: true
-    t.index ["user_id"], name: "index_filetree_snapshots_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
