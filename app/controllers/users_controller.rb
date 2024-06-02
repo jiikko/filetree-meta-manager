@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  skip_before_action :require_login, only: %i[new create]
+  skip_before_action :require_login, only: %i[new create mypage]
 
-  def show
-    @user = User.find(params[:id])
+  def mypage
+    @user = current_user
   end
 
   def new
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     end
 
     if result
-      redirect_to @user, notice: 'User was successfully created.'
+      redirect_to mypage_path, notice: 'User was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
