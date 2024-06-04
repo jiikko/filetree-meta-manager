@@ -250,10 +250,6 @@ GEM
     thor (1.3.1)
     timeout (0.4.1)
     trilogy (2.8.1)
-    turbo-rails (2.0.5)
-      actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
-      railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (0.13.0)
@@ -285,7 +281,6 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   trilogy
-  turbo-rails
   uuid7
 
 RUBY VERSION

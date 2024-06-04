@@ -10,7 +10,6 @@ gem 'sorcery'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'trilogy'
-gem 'turbo-rails'
 gem 'uuid7'
 
 group :development, :test do
