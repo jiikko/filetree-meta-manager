@@ -18,8 +18,8 @@ type Config struct {
 }
 
 func main() {
-	outputJSON := flag.Bool("json", true, "JSON形式で出力する")
 	displayOnly := flag.Bool("display-only", false, "サーバに送信せずにJSONを画面に表示する")
+	displayOnlyAsPlain := flag.Bool("display-only-as-plain", false, "サーバに送信せずにJSONを画面に表示する")
 	initConfig := flag.Bool("init-config", false, "設定ファイルの雛形を作成する")
 
 	flag.Parse()
@@ -58,7 +58,9 @@ func main() {
 	} else {
 		modifyFileTree(fileTree)
 
-		if *outputJSON {
+		if *displayOnlyAsPlain {
+			printFileTree(fileTree, "")
+		} else {
 			json := serializeAsJSON(fileTree)
 			if *displayOnly {
 				fmt.Println(json)
@@ -70,8 +72,6 @@ func main() {
 				fmt.Println("Failed to post file tree:", err)
 			}
 			return
-		} else {
-			printFileTree(fileTree, "")
 		}
 	}
 }
