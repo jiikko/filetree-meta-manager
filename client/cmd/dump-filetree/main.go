@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"time"
@@ -13,8 +16,9 @@ import (
 )
 
 type Config struct {
-	Url    string `yaml:"url"`
-	ApiKey string `yaml:"api_key"`
+	Url        string `yaml:"url"`
+	ApiKey     string `yaml:"api_key"`
+	DeviceName string `yaml:"device"`
 }
 
 func main() {
@@ -122,8 +126,9 @@ func loadConfig(baseDir string) (*Config, error) {
 
 func createConfigTemplate(baseDir string) (string, error) {
 	config := Config{
-		Url:    "http://localhost:3000",
-		ApiKey: "your-api-key",
+		Url:        "http://localhost:3000",
+		ApiKey:     "your-api-key",
+		DeviceName: "your-device-name",
 	}
 
 	configPath := filepath.Join(baseDir, "filetree_manager_config.yaml")
@@ -145,5 +150,28 @@ func createConfigTemplate(baseDir string) (string, error) {
 }
 
 func postFiletree(config *Config, json string) error {
+	reqBody := bytes.NewBuffer([]byte(json))
+	requestPath := fmt.Sprintf("%s/api/v1/filetrees?device=%s", config.Url, url.QueryEscape(config.DeviceName))
+	req, err := http.NewRequest("POST", requestPath, reqBody)
+	if err != nil {
+		return fmt.Errorf("リクエストの作成に失敗しました: %v", err)
+	}
+
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", config.ApiKey)
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("リクエストの送信に失敗しました: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("サーバーからエラーが返されました: %s", resp.Status) // TODO: response bodyも出力する
+	}
+
 	return nil
 }

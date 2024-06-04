@@ -6,7 +6,8 @@ class Api::V1::FiletreesController < Api::BaseController
 
     ApplicationRecord.transaction do
       device = current_user.devices.find_or_create_by!(name: device_name)
-      next_revision = device.filetree_snapshots.maximum(:revision) + 1
+      current_revision = device.filetree_snapshots.maximum(:revision) || 1
+      next_revision = current_revision + 1
       device.filetree_snapshots.create!(data: filetree_param, revision: next_revision)
     end
     render json: { status: 'ok' }
