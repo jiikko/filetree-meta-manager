@@ -7,19 +7,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/jiikko/filetree-meta-manager/client/internal"
-	"gopkg.in/yaml.v2"
 )
-
-type Config struct {
-	Url        string `yaml:"url"`
-	ApiKey     string `yaml:"api_key"`
-	DeviceName string `yaml:"device"`
-}
 
 func main() {
 	displayOnly := flag.Bool("display-only", false, "サーバに送信せずにJSONを画面に表示する")
@@ -34,30 +25,33 @@ func main() {
 	}
 
 	directoryPath := flag.Arg(0)
-	if _, err := os.Stat(directoryPath); os.IsNotExist(err) {
-		fmt.Println("ディレクトリが存在しません:", directoryPath)
+	PathManager := internal.PathManager{BaseDir: directoryPath}
+	err := PathManager.IsNotExist()
+	if err != nil {
+		fmt.Println("ディレクトリが存在しません:", PathManager.BaseDir)
 		return
 	}
 
 	if *initConfig {
-		configPath, err := createConfigTemplate(directoryPath)
+		// NOTE: すでにファイルが存在していたら、エラー上書きする
+		err := internal.CreateConfigTemplate(PathManager.ConfigPath())
 		if err != nil {
 			fmt.Println("設定ファイルの作成に失敗しました:", err)
 			return
 		}
-		fmt.Println("設定ファイルの雛形を作成しました:", configPath)
+		fmt.Println("設定ファイルの雛形を作成しました:", PathManager.ConfigPath())
 		return
 	}
 
-	config, err := loadConfig(directoryPath)
+	config, err := internal.LoadConfig(PathManager.ConfigPath())
 	if err != nil {
 		fmt.Println("設定ファイルの読み込みに失敗しました:", err)
 		return
 	}
 
-	fileTree, err := internal.RetrieveFileTree(directoryPath)
+	fileTree, err := internal.RetrieveFileTree(PathManager)
 	if err != nil {
-		fmt.Println("Failed to retrieve file tree from " + directoryPath)
+		fmt.Println("Failed to retrieve file tree from " + PathManager.BaseDir)
 		return
 	} else {
 		modifyFileTree(fileTree)
@@ -106,67 +100,7 @@ func serializeAsJSON(node *internal.FileInfo) string {
 	return string(jsonData)
 }
 
-func (config *Config) validateConfig() error {
-	if config.Url == "" {
-		return fmt.Errorf("Urlが設定されていません")
-	}
-	if config.ApiKey == "" {
-		return fmt.Errorf("ApiKeyが設定されていません")
-	}
-	if config.DeviceName == "" {
-		return fmt.Errorf("DeviceNameが設定されていません")
-	}
-	return nil
-}
-
-func loadConfig(baseDir string) (*Config, error) {
-	configPath := filepath.Join(baseDir, ".filetree_manager_config.yaml")
-	file, err := os.Open(configPath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var config Config
-	err = yaml.NewDecoder(file).Decode(&config)
-	if err != nil {
-		fmt.Println("設定ファイルのパースに失敗しました:", err)
-		return nil, err
-	}
-	err = config.validateConfig()
-	if err != nil {
-		return nil, err
-	}
-
-	return &config, nil
-}
-
-func createConfigTemplate(baseDir string) (string, error) {
-	config := Config{
-		Url:        "http://localhost:3000",
-		ApiKey:     "your-api-key",
-		DeviceName: "your-device-name",
-	}
-
-	configPath := filepath.Join(baseDir, ".filetree_manager_config.yaml")
-	file, err := os.Create(configPath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	encoder := yaml.NewEncoder(file)
-	defer encoder.Close()
-
-	err = encoder.Encode(config)
-	if err != nil {
-		return "", err
-	}
-
-	return configPath, nil
-}
-
-func postFiletree(config *Config, json string) error {
+func postFiletree(config *internal.Config, json string) error {
 	reqBody := bytes.NewBuffer([]byte(json))
 	requestPath := fmt.Sprintf("%s/api/v1/filetrees?device=%s", config.Url, url.QueryEscape(config.DeviceName))
 	req, err := http.NewRequest("POST", requestPath, reqBody)

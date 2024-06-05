@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
@@ -40,8 +39,8 @@ func calculateMD5(filePath string) (string, error) {
 	return hex.EncodeToString(hash.Sum(nil)), nil
 }
 
-func RetrieveFileTree(directoryPath string) (*FileInfo, error) {
-	directoryPath = strings.TrimSuffix(directoryPath, "/")
+func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
+	directoryPath := pm.BaseDirPath()
 
 	root := &FileInfo{
 		Path:       directoryPath,
@@ -55,6 +54,11 @@ func RetrieveFileTree(directoryPath string) (*FileInfo, error) {
 		}
 
 		if path == directoryPath {
+			return nil
+		}
+
+		// NOTE: 設定ファイルは無視する
+		if path == pm.ConfigPath() {
 			return nil
 		}
 
