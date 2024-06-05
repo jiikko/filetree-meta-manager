@@ -28,7 +28,7 @@
       <td><%= device.name %></td>
       <td>
         <ul>
-          <% device.filetree_snapshots.order(created_at: :desc).each do |snapshot| %>
+          <% device.filetree_snapshots.order(created_at: :desc).select(:id, :created_at).each do |snapshot| %>
             <li>
               <%= link_to snapshot do %>
                 <%= l(snapshot.created_at, format: :ja) %>
