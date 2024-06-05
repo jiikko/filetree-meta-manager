@@ -106,6 +106,19 @@ func serializeAsJSON(node *internal.FileInfo) string {
 	return string(jsonData)
 }
 
+func (config *Config) validateConfig() error {
+	if config.Url == "" {
+		return fmt.Errorf("Urlが設定されていません")
+	}
+	if config.ApiKey == "" {
+		return fmt.Errorf("ApiKeyが設定されていません")
+	}
+	if config.DeviceName == "" {
+		return fmt.Errorf("DeviceNameが設定されていません")
+	}
+	return nil
+}
+
 func loadConfig(baseDir string) (*Config, error) {
 	configPath := filepath.Join(baseDir, "filetree_manager_config.yaml")
 	file, err := os.Open(configPath)
@@ -118,6 +131,10 @@ func loadConfig(baseDir string) (*Config, error) {
 	err = yaml.NewDecoder(file).Decode(&config)
 	if err != nil {
 		fmt.Println("設定ファイルのパースに失敗しました:", err)
+		return nil, err
+	}
+	err = config.validateConfig()
+	if err != nil {
 		return nil, err
 	}
 
