@@ -24,7 +24,10 @@ func (f *FileInfo) IsDir() bool {
 	return f.MD5Checksum == ""
 }
 
+// NOTE: md5計算が重いので、一旦コメントアウト
 func calculateMD5(filePath string) (string, error) {
+	return "", nil
+
 	file, err := os.Open(filePath)
 	if err != nil {
 		return "", err
@@ -54,7 +57,7 @@ func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
 
 	err = filepath.Walk(directoryPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return err
+			return nil
 		}
 
 		if path == directoryPath {
