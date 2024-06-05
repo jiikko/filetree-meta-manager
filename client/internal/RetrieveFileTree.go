@@ -41,14 +41,18 @@ func calculateMD5(filePath string) (string, error) {
 
 func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
 	directoryPath := pm.BaseDirPath()
+	rootInfo, err := os.Stat(directoryPath)
+	if err != nil {
+		return nil, err
+	}
 
 	root := &FileInfo{
 		Path:       directoryPath,
 		Children:   []*FileInfo{},
-		CreateTime: time.Now(),
+		CreateTime: rootInfo.ModTime().Truncate(time.Second),
 	}
 
-	err := filepath.Walk(directoryPath, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(directoryPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}

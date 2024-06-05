@@ -10,9 +10,14 @@ class Api::V1::FiletreesController < Api::BaseController
       next_revision = current_revision + 1
       device.filetree_snapshots.create!(data: filetree_param, revision: next_revision)
     end
+
     render json: { status: 'ok' }
   rescue UnsetDeviceError
     render json: { status: 'ng', message: 'device name is not set' }, status: :bad_request
+  rescue ActiveRecord::RecordNotUnique
+    Rails.logger.warn('same snapshot')
+    # NOTE: 処理としては正常なので、ステータスコードは 200 で返す
+    render json: { status: 'ng', message: 'same snapshot' }, status: :ok
   end
 
   private
