@@ -120,7 +120,7 @@ func (config *Config) validateConfig() error {
 }
 
 func loadConfig(baseDir string) (*Config, error) {
-	configPath := filepath.Join(baseDir, "filetree_manager_config.yaml")
+	configPath := filepath.Join(baseDir, ".filetree_manager_config.yaml")
 	file, err := os.Open(configPath)
 	if err != nil {
 		return nil, err
@@ -148,7 +148,7 @@ func createConfigTemplate(baseDir string) (string, error) {
 		DeviceName: "your-device-name",
 	}
 
-	configPath := filepath.Join(baseDir, "filetree_manager_config.yaml")
+	configPath := filepath.Join(baseDir, ".filetree_manager_config.yaml")
 	file, err := os.Create(configPath)
 	if err != nil {
 		return "", err
