@@ -1,9 +1,6 @@
 package internal
 
 import (
-	"crypto/md5"
-	"encoding/hex"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,10 +8,10 @@ import (
 )
 
 type FileInfo struct {
-	Path        string      `json:"path"`
-	CreateTime  time.Time   `json:"created_at"`
-	MD5Checksum string      `json:"md5hash"`
-	Children    []*FileInfo `json:"children"`
+	Path       string    `json:"path"`
+	CreateTime time.Time `json:"created_at"`
+	isDir      bool
+	Children   []*FileInfo `json:"children"`
 }
 
 func (f *FileInfo) PathWithoutDir() string {
@@ -22,25 +19,7 @@ func (f *FileInfo) PathWithoutDir() string {
 }
 
 func (f *FileInfo) IsDir() bool {
-	return f.MD5Checksum == ""
-}
-
-// NOTE: md5計算が重いので、一旦コメントアウト
-func calculateMD5(filePath string) (string, error) {
-	return "", nil
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	hash := md5.New()
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", err
-	}
-
-	return hex.EncodeToString(hash.Sum(nil)), nil
+	return f.isDir
 }
 
 var ignorePaths = []string{
@@ -82,18 +61,11 @@ func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
 			return nil
 		}
 
-		var md5Checksum string
-		if !info.IsDir() {
-			md5Checksum, err = calculateMD5(path)
-			if err != nil {
-				return err
-			}
-		}
 		fileInfo := &FileInfo{
-			Path:        path,
-			CreateTime:  info.ModTime().Truncate(time.Second),
-			MD5Checksum: md5Checksum,
-			Children:    []*FileInfo{},
+			Path:       path,
+			CreateTime: info.ModTime().Truncate(time.Second),
+			isDir:      info.IsDir(),
+			Children:   []*FileInfo{},
 		}
 
 		parentDir := filepath.Dir(path)
