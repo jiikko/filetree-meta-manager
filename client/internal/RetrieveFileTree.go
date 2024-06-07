@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -42,6 +43,12 @@ func calculateMD5(filePath string) (string, error) {
 	return hex.EncodeToString(hash.Sum(nil)), nil
 }
 
+var ignorePaths = []string{
+	".Spotlight-V100",
+	".DS_Store",
+	".fseventsd",
+}
+
 func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
 	directoryPath := pm.BaseDirPath()
 	rootInfo, err := os.Stat(directoryPath)
@@ -64,8 +71,14 @@ func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
 			return nil
 		}
 
+		for _, ignoredPath := range ignorePaths {
+			if strings.Contains(path, ignoredPath) {
+				return nil
+			}
+		}
+
 		// NOTE: 設定ファイルは無視する
-		if path == pm.ConfigPath() {
+		if strings.HasSuffix(path, pm.ConfigPath()) {
 			return nil
 		}
 
