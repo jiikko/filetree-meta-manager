@@ -15,6 +15,7 @@ class Api::V1::FiletreesController < Api::BaseController
 
       new_snapshot.save!
     end
+    device.cleanup_old_revisions # TODO: 非同期処理に逃したい
 
     render json: { status: 'ok' }
   rescue UnsetDeviceError

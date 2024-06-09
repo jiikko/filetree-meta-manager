@@ -1,4 +1,6 @@
 class FiletreeSnapshot < ApplicationRecord
+  KEEP_MAX_REVISIONS = 3
+
   belongs_to :device
 
   before_create :fill_data_hash
