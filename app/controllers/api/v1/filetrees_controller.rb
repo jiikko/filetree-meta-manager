@@ -7,9 +7,7 @@ class Api::V1::FiletreesController < Api::BaseController
 
     ApplicationRecord.transaction do
       device = current_user.devices.find_or_create_by!(name: device_name)
-      current_revision = device.filetree_snapshots.maximum(:revision) || 1
-      next_revision = current_revision + 1
-      new_snapshot = device.filetree_snapshots.build(data: filetree_param, revision: next_revision)
+      new_snapshot = device.filetree_snapshots.build(data: filetree_param, revision: device.next_revision)
       new_snapshot.fill_data_hash
       raise SameSnapshotError if new_snapshot.exists_same_snapshot?
 
