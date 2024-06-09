@@ -9,7 +9,9 @@ export default class extends Controller {
   toggle(event) {
     event.stopPropagation();
 
-    this._toggle(event.target);
+    if (event.target.classList.contains("directory")) {
+      this._toggle(event.target);
+    }
   }
 
   openAll() {

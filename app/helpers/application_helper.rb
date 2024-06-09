@@ -4,7 +4,13 @@ module ApplicationHelper
       node['children'].map do |child|
         has_children = child['children'].present?
         class_name = has_children ? 'directory' : nil
-        row_data_attr = { action: 'click->filetree#toggle', filetree_target: 'directory' } if has_children
+        if has_children
+          row_data_attr = {
+            controller: 'clipboard',
+            action: 'click->filetree#toggle',
+            filetree_target: 'directory'
+          }
+        end
 
         content_tag(:li, class: class_name, data: row_data_attr) do
           concat(child['path'])
