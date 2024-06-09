@@ -10,11 +10,14 @@
   <% @user.api_keys.each do |api_key| %>
     <tr>
       <td><%= l api_key.created_at, format: :ja %></td>
-      <td><%= api_key.value %></td>
+      <td>
+        <div data-controller="clipboard" data-clipboard-success-content-value="Copied!">
+        <input type="text" value="<%= api_key.value %>" data-clipboard-target="source" size='40' readonly>
+        <button type="button" data-action="clipboard#copy" data-clipboard-target="button">Copy</button>
+      </td>
     </tr>
   <% end %>
 </table>
-
 
 <h2>Device</h2>
 
