@@ -3,9 +3,11 @@ class FiletreeSnapshot < ApplicationRecord
 
   before_create :fill_data_hash
 
-  private
-
   def fill_data_hash
-    self.data_hash = Digest::MD5.hexdigest(data.to_json)
+    self.data_hash ||= Digest::MD5.hexdigest(data.to_json)
+  end
+
+  def exists_same_snapshot?
+    device.filetree_snapshots.exists?(data_hash:)
   end
 end

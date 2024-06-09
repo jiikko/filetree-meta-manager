@@ -1,5 +1,6 @@
 class Api::V1::FiletreesController < Api::BaseController
   class UnsetDeviceError < StandardError; end
+  class SameSnapshotError < StandardError; end
 
   def create
     raise(UnsetDeviceError, 'need device name') if (device_name = params[:device]).blank?
@@ -8,13 +9,17 @@ class Api::V1::FiletreesController < Api::BaseController
       device = current_user.devices.find_or_create_by!(name: device_name)
       current_revision = device.filetree_snapshots.maximum(:revision) || 1
       next_revision = current_revision + 1
-      device.filetree_snapshots.create!(data: filetree_param, revision: next_revision)
+      new_snapshot = device.filetree_snapshots.build(data: filetree_param, revision: next_revision)
+      new_snapshot.fill_data_hash
+      raise SameSnapshotError if new_snapshot.exists_same_snapshot?
+
+      new_snapshot.save!
     end
 
     render json: { status: 'ok' }
   rescue UnsetDeviceError
     render json: { status: 'ng', message: 'device name is not set' }, status: :bad_request
-  rescue ActiveRecord::RecordNotUnique
+  rescue SameSnapshotError
     Rails.logger.warn('same snapshot')
     # NOTE: 処理としては正常なので、ステータスコードは 200 で返す
     render json: { status: 'ng', message: 'same snapshot' }, status: :ok
