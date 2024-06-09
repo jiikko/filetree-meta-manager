@@ -27,6 +27,18 @@
     display: block;
   }
 
+  .directory::before {
+    content: "[+]";
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .directory.open::before {
+    content: "[-]";
+    display: inline-block;
+    margin-right: 5px;
+  }
+
   .toggle {
     cursor: pointer;
     margin-right: 5px;

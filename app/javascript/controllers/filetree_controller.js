@@ -4,11 +4,7 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["directory"];
 
-  connect() {
-    // this.directoryTargets.forEach((toggle) => {
-    //   toggle.addEventListener("click", this.toggle.bind(this));
-    // });
-  }
+  connect() {}
 
   toggle(event) {
     event.stopPropagation();
@@ -31,32 +27,15 @@ export default class extends Controller {
   _toggle(element) {
     const directory = element.closest(".directory");
     directory.classList.toggle("open");
-
-    if (directory.classList.contains("open")) {
-      element.textContent = "[-]";
-    } else {
-      element.textContent = "[+]";
-    }
   }
+
   _open(element) {
     const parentDirectory = element.closest(".directory");
     parentDirectory.classList.add("open");
-
-    if (element.classList.contains("open")) {
-      element.textContent = "[+]";
-    } else {
-      element.textContent = "[-]";
-    }
   }
 
   _close(element) {
     const parentDirectory = element.closest(".directory");
     parentDirectory.classList.remove("open");
-
-    if (element.classList.contains("open")) {
-      element.textContent = "[-]";
-    } else {
-      element.textContent = "[+]";
-    }
   }
 }
