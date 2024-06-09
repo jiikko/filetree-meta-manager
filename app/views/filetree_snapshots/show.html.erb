@@ -6,43 +6,9 @@
 
 <hr>
 
-<button id="open-all">全てを開く</button>
-<button id="close-all">全てを閉じる</button>
+<div id="filetree" data-controller="filetree">
+  <button data-action="filetree#openAll">Open All</button>
+  <button data-action="filetree#closeAll">Close All</button>
 
-<div id="filetree">
   <%= render_filetree(@filetree_snapshot.data) %>
 </div>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll("#filetree .directory > .toggle").forEach(function(toggle) {
-    toggle.addEventListener("click", function(event) {
-      event.stopPropagation();
-
-      const directory = toggle.parentElement;
-      directory.classList.toggle("open");
-
-      if (directory.classList.contains("open")) {
-        toggle.textContent = '[-]';
-      } else {
-        toggle.textContent = '[+]';
-      }
-    });
-  });
-});
-
-document.getElementById("open-all").addEventListener("click", function() {
-  document.querySelectorAll("#filetree .directory").forEach(function(directory) {
-    directory.classList.add("open");
-    directory.querySelector('.toggle').textContent = '[-]';
-  });
-});
-
-document.getElementById("close-all").addEventListener("click", function() {
-  document.querySelectorAll("#filetree .directory").forEach(function(directory) {
-    directory.classList.remove("open");
-    directory.querySelector('.toggle').textContent = '[+]';
-  });
-});
-</script>
