@@ -13,3 +13,20 @@
  *= require_tree .
  *= require_self
  */
+
+#filetree ul {
+  list-style-type: none;
+}
+
+#filetree .directory > ul {
+  display: none;
+}
+
+#filetree .directory.open > ul {
+  display: block;
+}
+
+#filetree .toggle {
+  cursor: pointer;
+  margin-right: 5px;
+}
