@@ -28,13 +28,19 @@
   }
 
   .directory::before {
-    content: "[+]";
+    content: "🗂";
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .file_movie::before {
+    content: "🎥";
     display: inline-block;
     margin-right: 5px;
   }
 
   .directory.open::before {
-    content: "[-]";
+    content: "📂";
     display: inline-block;
     margin-right: 5px;
   }
