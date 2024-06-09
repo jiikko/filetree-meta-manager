@@ -17,36 +17,39 @@
 #filetree {
   ul {
     list-style-type: none;
-  }
+    margin-left: 0;
+    cursor: text;
 
-  .directory > ul {
-    display: none;
-  }
+    li {
+      display: block;
+      width: max-content;
 
-  .directory.open > ul {
-    display: block;
-  }
+      &.directory {
+        cursor: pointer;
 
-  .directory::before {
-    content: "🗂";
-    display: inline-block;
-    margin-right: 5px;
-  }
+        > ul {
+          display: none;
+        }
 
-  .file_movie::before {
-    content: "🎥";
-    display: inline-block;
-    margin-right: 5px;
-  }
+        &.open > ul {
+          display: block;
+        }
 
-  .directory.open::before {
-    content: "📂";
-    display: inline-block;
-    margin-right: 5px;
-  }
+        &::before {
+          content: "🗂";
+          margin-right: 5px;
+        }
 
-  .toggle {
-    cursor: pointer;
-    margin-right: 5px;
+        &.open::before {
+          content: "📂";
+          margin-right: 5px;
+        }
+      }
+
+      &.file_movie::before {
+        content: "🎥";
+        margin-right: 5px;
+      }
+    }
   }
 }
