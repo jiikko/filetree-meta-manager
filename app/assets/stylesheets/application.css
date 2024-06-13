@@ -54,6 +54,11 @@
         content: "🎥";
         margin-right: 5px;
       }
+
+      &.file_photo::before {
+        content: "🖼";
+        margin-right: 5px;
+      }
     }
   }
 }

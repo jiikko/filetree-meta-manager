@@ -8,6 +8,7 @@ module ApplicationHelper
         has_children = child['children'].present?
         class_names = has_children ? ['directory'] : []
         class_names << 'file_movie' if child['path'].match?(/(mp4|mkv|avi|mov|flv|wmv|mpg|mpeg)$/)
+        class_names << 'file_photo' if child['path'].match?(/(jpg|jpeg|png|gif|bmp|tiff|webp)$/)
         row_data_attr = if has_children
                           { controller: 'clipboard',
                             action: 'click->filetree#toggle',

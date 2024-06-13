@@ -26,6 +26,7 @@ var ignorePaths = []string{
 	".Spotlight-V100",
 	".DS_Store",
 	".fseventsd",
+	".unwanted",
 }
 
 func RetrieveFileTree(pm PathManager) (*FileInfo, error) {
