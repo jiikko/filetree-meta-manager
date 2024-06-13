@@ -9,6 +9,7 @@
 <div id="filetree" data-controller="filetree">
   <button data-action="filetree#openAll">Open All</button>
   <button data-action="filetree#closeAll">Close All</button>
+  <input data-action="input->filetree#search" type="text" data-target-target="search" placeholder="Search" size="50">
 
   <%= render_filetree(@filetree_snapshot.data) %>
 </div>

@@ -24,6 +24,10 @@
       display: block;
       width: max-content;
 
+      &.hidden {
+        display: none;
+      }
+
       &.directory {
         cursor: pointer;
 
