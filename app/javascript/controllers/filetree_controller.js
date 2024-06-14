@@ -15,8 +15,10 @@ export default class extends Controller {
   }
 
   openAll() {
-    this.directoryTargets.forEach((directory) => {
-      this._open(directory);
+    requestAnimationFrame(() => {
+      this.directoryTargets.forEach((directory) => {
+        this._open(directory);
+      });
     });
   }
 

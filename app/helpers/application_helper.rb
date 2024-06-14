@@ -1,7 +1,4 @@
 module ApplicationHelper
-  # ヘルパーメソッドの追加コメント
-  # node: ファイルツリーデータのノード
-  # level: 現在のノードの深さ（rootは0）
   def render_filetree(node, level = 0)
     content_tag(:ul, class: ['node', "level-#{level}"]) do
       node['children'].map do |child|
@@ -10,9 +7,7 @@ module ApplicationHelper
         class_names << 'file_movie' if child['path'].match?(/(mp4|mkv|avi|mov|flv|wmv|mpg|mpeg)$/)
         class_names << 'file_photo' if child['path'].match?(/(jpg|jpeg|png|gif|bmp|tiff|webp)$/)
         row_data_attr = if has_children
-                          { controller: 'clipboard',
-                            action: 'click->filetree#toggle',
-                            filetree_target: 'directory' }
+                          { filetree_target: 'directory', controller: 'clipboard', action: 'click->filetree#toggle' }
                         else
                           { filetree_target: 'file' }
                         end
