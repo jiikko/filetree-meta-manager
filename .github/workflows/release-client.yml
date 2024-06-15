@@ -54,7 +54,7 @@ jobs:
       - name: Build
         run: |
           cd client
-          make build
+          make dist
 
       - name: Upload Release Asset (darwin-amd64)
         uses: actions/upload-release-asset@v1
