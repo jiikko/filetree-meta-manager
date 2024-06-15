@@ -1,6 +1,7 @@
 class CreateFiletreeSnapshots < ActiveRecord::Migration[7.1]
   def change
-    create_table :filetree_snapshots do |t|
+    # NOTE: dataが大きいので、ROW_FORMAT=COMPRESSEDを指定しておく
+    create_table :filetree_snapshots, options: 'ROW_FORMAT=COMPRESSED' do |t|
       t.json :data, null: false
       t.string :data_hash, null: false
       t.bigint :device_id, null: false, index: false

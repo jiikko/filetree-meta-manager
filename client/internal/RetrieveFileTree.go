@@ -22,6 +22,7 @@ func (f *FileInfo) IsDir() bool {
 	return f.isDir
 }
 
+// TODO: 設定ファイルからもignoresを取り込む
 var ignorePaths = []string{
 	".Spotlight-V100",
 	".DS_Store",

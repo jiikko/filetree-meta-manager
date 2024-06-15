@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
-  create_table "filetree_snapshots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "filetree_snapshots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", options: "ENGINE=InnoDB ROW_FORMAT=COMPRESSED", force: :cascade do |t|
     t.json "data", null: false
     t.string "data_hash", null: false
     t.bigint "device_id", null: false
