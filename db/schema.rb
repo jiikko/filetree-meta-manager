@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
-  create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "value", null: false
     t.datetime "created_at", null: false
@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
     t.index ["value"], name: "index_api_keys_on_value", unique: true
   end
 
-  create_table "devices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "devices", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
-  create_table "filetree_snapshots", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", options: "ENGINE=InnoDB ROW_FORMAT=COMPRESSED", force: :cascade do |t|
+  create_table "filetree_snapshots", charset: "utf8mb4", collation: "utf8mb4_bin", options: "ENGINE=InnoDB ROW_FORMAT=COMPRESSED", force: :cascade do |t|
     t.json "data", null: false
     t.string "data_hash", null: false
     t.bigint "device_id", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_01_115550) do
     t.index ["device_id", "revision"], name: "index_filetree_snapshots_on_device_id_and_revision", unique: true
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "email", null: false
     t.string "crypted_password"
     t.string "salt"

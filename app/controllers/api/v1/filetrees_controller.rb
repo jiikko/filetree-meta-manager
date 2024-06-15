@@ -5,6 +5,7 @@ class Api::V1::FiletreesController < Api::BaseController
   def create
     raise(UnsetDeviceError, 'need device name') if (device_name = params[:device]).blank?
 
+    device = nil
     ApplicationRecord.transaction do
       device = current_user.devices.find_or_create_by!(name: device_name)
       new_snapshot = device.filetree_snapshots.build(data: filetree_param, revision: device.next_revision)
