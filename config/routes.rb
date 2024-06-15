@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   resource :users, only: %i[new create]
-  resources :filetree_snapshots, only: %i[show]
+  resources :filetree_snapshots, only: %i[show destroy]
 
   get :mypage, to: 'users#mypage'
 

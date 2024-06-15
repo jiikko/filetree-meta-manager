@@ -1,5 +1,6 @@
 <%= link_to '戻る', mypage_path %>
 <hr>
+<%= link_to '削除する', @filetree_snapshot, method: :delete, data: { confirm: 'Are you sure?' } %>
 
 <h2><%= @device.name %></h2>
 <%= l @filetree_snapshot.created_at, format: :ja %>
