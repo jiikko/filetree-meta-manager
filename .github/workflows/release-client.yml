@@ -7,18 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_release:
+  release:
     permissions:
       contents: write
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: Read app version
         id: read_version
         run: |
-          cd client
-          echo "VERSION=$(cat .app_version)" >> $GITHUB_ENV
+          VERSION=$(cat .app_version)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "::set-output name=VERSION::${VERSION}"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -30,14 +34,6 @@ jobs:
           draft: false
           prerelease: false
 
-  build_and_upload:
-    permissions:
-      contents: write
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -51,7 +47,9 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Install dependencies
-        run: go mod download
+        run: |
+          cd client
+          go mod download
 
       - name: Build
         run: |
@@ -63,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: client/dist/kecy-darwin-amd64
           asset_name: kecy-darwin-amd64
           asset_content_type: application/octet-stream
@@ -73,7 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: client/dist/kecy-darwin-arm64
           asset_name: kecy-darwin-arm64
           asset_content_type: application/octet-stream
@@ -83,7 +81,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: client/dist/kecy-linux-amd64
           asset_name: kecy-linux-amd64
           asset_content_type: application/octet-stream
@@ -93,7 +91,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: client/dist/kecy-linux-arm64
           asset_name: kecy-linux-arm64
           asset_content_type: application/octet-stream
