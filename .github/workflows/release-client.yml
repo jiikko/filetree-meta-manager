@@ -62,8 +62,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: client/dist/kecy-darwin-amd64
-          asset_name: kecy-darwin-amd64
+          asset_path: client/dist/filetree_dumper-darwin-amd64
+          asset_name: filetree_dumper-darwin-amd64
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (darwin-arm64)
@@ -72,8 +72,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: client/dist/kecy-darwin-arm64
-          asset_name: kecy-darwin-arm64
+          asset_path: client/dist/filetree_dumper-darwin-arm64
+          asset_name: filetree_dumper-darwin-arm64
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (linux-amd64)
@@ -82,8 +82,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: client/dist/kecy-linux-amd64
-          asset_name: kecy-linux-amd64
+          asset_path: client/dist/filetree_dumper-linux-amd64
+          asset_name: filetree_dumper-linux-amd64
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (linux-arm64)
@@ -92,6 +92,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: client/dist/kecy-linux-arm64
-          asset_name: kecy-linux-arm64
+          asset_path: client/dist/filetree_dumper-linux-arm64
+          asset_name: filetree_dumper-linux-arm64
           asset_content_type: application/octet-stream

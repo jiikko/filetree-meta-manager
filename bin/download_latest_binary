@@ -5,8 +5,8 @@ set -e
 # リポジトリ情報
 OWNER="jiikko"
 REPO="filetree-meta-manager"
-ASSET_NAME="kecy-darwin-arm64"
-BIN_NAME="kecy"
+ASSET_NAME="filetree_dumper-darwin-arm64"
+BIN_NAME="filetree_dumper"
 
 RELEASES_URL="https://github.com/$OWNER/$REPO/releases/latest/download/$ASSET_NAME"
 curl -L -o $BIN_NAME $RELEASES_URL
