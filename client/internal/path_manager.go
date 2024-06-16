@@ -7,7 +7,7 @@ import (
 )
 
 type PathManager struct {
-	BaseDir string
+	BaseDir string // NOTE: 呼び出し厳禁. 末尾に/があったりなかったりするので、BaseDirPath()を使うこと
 }
 
 func (pm *PathManager) IsNotExist() error {
@@ -24,7 +24,7 @@ func (pm *PathManager) BaseDirPath() string {
 }
 
 func (pm *PathManager) ConfigPath() string {
-	return fmt.Sprintf("%s/%s", pm.BaseDir, pm.ConfigFileName())
+	return fmt.Sprintf("%s/%s", pm.BaseDirPath(), pm.ConfigFileName())
 }
 
 func (pm *PathManager) ConfigFileName() string {
