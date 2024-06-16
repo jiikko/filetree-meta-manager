@@ -24,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	if outputVersion {
-		fmt.Println("filetree-meta-manager version:", version) // NOTE:  -ldflags="-X main.version=v1.0.0"で埋め込む
+		fmt.Println("filetree-meta-manager version:", version) // NOTE: -ldflags="-X main.version=v1.0.0"で埋め込む
 		return
 	}
 
