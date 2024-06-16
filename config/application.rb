@@ -20,6 +20,8 @@ Bundler.require(*Rails.groups)
 
 module FiletreeMetaManager
   class Application < Rails::Application
+    config.middleware.use Rack::Deflater
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
