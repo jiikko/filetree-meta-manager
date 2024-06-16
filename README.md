@@ -2,6 +2,9 @@
 
 このツールは、ファイルツリーを WEB から閲覧するためのものです。ファイルの実体には関与せず、主にバックアップ用 HDD の管理を楽にするために制作されました。
 
+![image](https://github.com/jiikko/filetree-meta-manager/assets/1664497/f98cd076-ed14-4da9-80ae-d1b7d4b07444)
+
+
 ## System dependencies
 
 - Ruby
