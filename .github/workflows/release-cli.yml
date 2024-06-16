@@ -1,4 +1,4 @@
-name: Release Client
+name: Release CLI
 
 on:
   workflow_dispatch:
