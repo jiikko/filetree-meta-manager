@@ -1,9 +1,6 @@
 name: Release Client
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -15,12 +12,35 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Read app version
         id: read_version
         run: |
           VERSION=$(cat .app_version)
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          CURRENT_TAG="v${VERSION}"
+          echo "CURRENT_TAG=${CURRENT_TAG}" >> $GITHUB_ENV
+          echo "最新タグ：${CURRENT_TAG}"
+
+      - name: get Tag ver
+        id: get_tag_ver
+        run: |
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "CURRENT_COMMIT=${CURRENT_COMMIT}" >> $GITHUB_ENV
+          echo "現在のコミットハッシュ：${CURRENT_COMMIT}"
+
+          PREVIOUS_TAG=$(git tag --sort=creatordate | tail -n1)
+          echo "PREVIOUS_TAG=${PREVIOUS_TAG}" >> $GITHUB_ENV
+          echo "PREVIOUS_TAG：${PREVIOUS_TAG}"
+
+      - name: release diff get
+        id: commit_diff
+        run: |
+          echo -e ":clock10: release date: $(TZ=Asia/Tokyo date +%Y-%m-%d-%H%M%S)\n" > DIFF_COMMIT
+          echo "$(git log --reverse --pretty=format:'* %s' ${PREVIOUS_TAG}..${CURRENT_COMMIT} -- client)" >> DIFF_COMMIT
+          echo "diff：$(cat DIFF_COMMIT)"
 
       - name: Create Release
         id: create_release
@@ -28,8 +48,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ env.VERSION }}
+          tag_name: ${{ env.CURRENT_TAG }}
           release_name: ${{ env.VERSION }}
+          body_path: DIFF_COMMIT
           draft: false
           prerelease: false
 
