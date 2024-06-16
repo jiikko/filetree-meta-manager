@@ -4,8 +4,7 @@
 
 ![image](https://github.com/jiikko/filetree-meta-manager/assets/1664497/f98cd076-ed14-4da9-80ae-d1b7d4b07444)
 
-
-## System dependencies
+## 使っている技術
 
 - Ruby
   - `cat .ruby-version`
@@ -25,10 +24,10 @@
 - 設定ファイルの編集
   - `target_dir/.filetree_meta_manager.yml` をテキストエディタで開いて、url, api_key, device を設定してください
 - ファイルツリーのダンプと送信
-- `filetree_dumper target_dir`を実行して、WEB アプリケーションに送信する
+  - `filetree_dumper target_dir`を実行して、WEB アプリケーションに送信する
 - WEB アプリケーションでファイルツリーを閲覧
 
-## 開発
+## 開発関係
 
 ### サーバのセットアップ
 
