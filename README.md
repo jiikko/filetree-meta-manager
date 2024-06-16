@@ -1,6 +1,8 @@
 # filetree-meta-manager
 
-このツールは、ファイルツリーを WEB から閲覧するためのものです。ファイルの実体には関与せず、主にバックアップ用 HDD の管理を楽にするために制作されました。
+このツールは、ファイルツリーをWEBから閲覧するためのものです。ファイルの実体には関与せず、主にバックアップ用HDDの管理を容易にするために制作されました。
+
+このツールは、CLIツールとWEBアプリケーションの2つのコンポーネントから構成されています。CLIツールは、ファイルツリーの収集およびWEBアプリケーションへの送信を行います。WEBアプリケーションは、収集されたファイルツリーの閲覧を提供します。
 
 ![image](https://github.com/jiikko/filetree-meta-manager/assets/1664497/f98cd076-ed14-4da9-80ae-d1b7d4b07444)
 
@@ -8,7 +10,7 @@
 
 - Ruby
   - `cat .ruby-version`
-- MySQL8.X
+- MySQL 8.X
 
 ## チュートリアル
 
@@ -17,14 +19,14 @@
 - API キーを取得
   - WEB アプリケーションから API キーを取得してください。あとで使用します。
 - CLI ツールをダウンロード
-  - https://github.com/jiikko/filetree-meta-manager/releases から最新のバイナリをダウンロードしてください
+  - https://github.com/jiikko/filetree-meta-manager/releases から、実行環境に合う最新のバイナリをダウンロードしてください
 - 設定ファイルの雛形作成
   - `./filetree_dumper --init-config target_dir`
-  - NOTE: ディレクトリの root には、設定ファイルが必要です
+  - NOTE: ディレクトリのルートには、設定ファイルが必要です
 - 設定ファイルの編集
   - `target_dir/.filetree_meta_manager.yml` をテキストエディタで開いて、url, api_key, device を設定してください
 - ファイルツリーのダンプと送信
-  - `filetree_dumper target_dir`を実行して、WEB アプリケーションに送信する
+  - `./filetree_dumper target_dir`を実行して、WEB アプリケーションに送信する
 - WEB アプリケーションでファイルツリーを閲覧
 
 ## 開発関係
@@ -35,11 +37,11 @@
 - rbenv install `cat .ruby-version`
 - bin/rails db:drop db:create db:migrate
 
-### テストを実行する
+### テストの実行
 
 - `bin/rspec`
 
-### Deployment
+### デプロイメント
 
 - WEB アプリケーション
   - TODO
