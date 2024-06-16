@@ -1,8 +1,8 @@
 # filetree-meta-manager
 
-このツールは、ファイルツリーをWEBから閲覧するためのものです。ファイルの実体には関与せず、主にバックアップ用HDDの管理を容易にするために制作されました。
+このツールは、あらかじめアップロードしたファイルツリーをWEBから閲覧するために作成されました。ファイルの実体には関与せず、主にバックアップ用HDDの管理を容易にすることを目的としています。
 
-このツールは、CLIツールとWEBアプリケーションの2つのコンポーネントから構成されています。CLIツールは、ファイルツリーの収集およびWEBアプリケーションへの送信を行います。WEBアプリケーションは、収集されたファイルツリーの閲覧を提供します。
+ツールはCLIツールとWEBアプリケーションの2つのコンポーネントから構成されています。CLIツールはファイルツリーの収集およびWEBアプリケーションへの送信を行います。WEBアプリケーションは、収集されたファイルツリーの閲覧を提供します。
 
 ![image](https://github.com/jiikko/filetree-meta-manager/assets/1664497/f98cd076-ed14-4da9-80ae-d1b7d4b07444)
 
@@ -29,13 +29,18 @@
   - `./filetree_dumper target_dir`を実行して、WEB アプリケーションに送信する
 - WEB アプリケーションでファイルツリーを閲覧
 
-## 開発関係
+## 開発者向け情報
 
 ### サーバのセットアップ
 
 - brew install mysql rbenv
 - rbenv install `cat .ruby-version`
 - bin/rails db:drop db:create db:migrate
+
+### CLI ツールのセットアップ
+
+- brew install go
+- go run cmd/dump-filetree/main.go --version
 
 ### テストの実行
 
@@ -50,5 +55,5 @@
 
 ### デバッグ TIPS
 
-- 開発環境の cli ツールを実行する方法
+- 開発環境の CLI ツールを実行する方法
   - cd client; go run cmd/dump-filetree/main.go tmp
