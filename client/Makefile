@@ -2,15 +2,19 @@
 
 PLATFORMS = linux darwin
 ARCHITECTURES = amd64 arm64
+VERSION ?= unknown
 
 build:
-	go build -o bin/ ./cmd/...
+	go build -ldflags="-X main.version=$(VERSION)" -o bin/ ./cmd/...
 
 dist:
+ifndef VERSION
+	$(error VERSION is not set)
+endif
 	@for platform in $(PLATFORMS); do \
-		for arch in $(ARCHITECTURES); do \
-			GOOS=$$platform GOARCH=$$arch go build -o dist/filetree_dumper-$$platform-$$arch ./cmd/...; \
-		done \
+			for arch in $(ARCHITECTURES); do \
+					GOOS=$$platform GOARCH=$$arch go build -ldflags="-X main.version=$(VERSION)" -o dist/filetree_dumper-$$platform-$$arch ./cmd/...; \
+			done \
 	done
 
 test:

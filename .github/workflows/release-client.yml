@@ -73,6 +73,8 @@ jobs:
           go mod download
 
       - name: Build
+        env:
+          VERSION: ${{ env.VERSION }}
         run: |
           cd client
           make dist

@@ -12,12 +12,21 @@ import (
 	"github.com/jiikko/filetree-meta-manager/client/internal"
 )
 
+var version string
+
 func main() {
 	displayOnly := flag.Bool("display-only", false, "サーバに送信せずにJSONを画面に表示する")
 	displayOnlyAsPlain := flag.Bool("display-only-as-plain", false, "サーバに送信せずにJSONを画面に表示する")
 	initConfig := flag.Bool("init-config", false, "設定ファイルの雛形を作成する")
+	var outputVersion bool
+	flag.BoolVar(&outputVersion, "version", false, "バージョンを表示する")
 
 	flag.Parse()
+
+	if outputVersion {
+		fmt.Println("filetree-meta-manager version:", version) // NOTE:  -ldflags="-X main.version=v1.0.0"で埋め込む
+		return
+	}
 
 	if len(flag.Args()) < 1 {
 		fmt.Println("ディレクトリパスを指定してください")
