@@ -11,7 +11,7 @@
 - Ruby
   - `cat .ruby-version`
 - MySQL 8.X
-- GCP CloudRun
+- GCP Cloud Run
 
 ## チュートリアル
 
