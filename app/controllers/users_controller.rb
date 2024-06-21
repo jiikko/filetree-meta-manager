@@ -10,6 +10,11 @@ class UsersController < ApplicationController
   end
 
   def create
+    unless signup_enabled?
+      redirect_to new_user_path, alert: 'Signup is disabled.'
+      return
+    end
+
     @user = User.new(user_params)
 
     result = ApplicationRecord.transaction do

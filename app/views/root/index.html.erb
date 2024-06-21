@@ -1,9 +1,9 @@
-<%= link_to '新規登録する', new_users_path %><br>
-<%= link_to 'ログインする', login_path %><br>
-
 <% if logged_in? %>
-  <hr>
-
   <%= link_to 'マイページ', mypage_path %><br>
-  <%= link_to 'ログアウトする', logout_path %>
+  <%= link_to 'ログアウトする', logout_path, data: { method: :delete, confirm: 'ログアウトしますか？' } %><br>
+<%  else %>
+  <% if signup_enabled? %>
+    <%= link_to '新規登録する', new_users_path %><br>
+  <% end %>
+  <%= link_to 'ログインする', login_path %><br>
 <% end %>
