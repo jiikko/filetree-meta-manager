@@ -16,17 +16,17 @@ class UsersController < ApplicationController
     end
 
     @user = User.new(user_params)
+    if @user.invalid?
+      render :new, status: :unprocessable_entity
+      return
+    end
 
-    result = ApplicationRecord.transaction do
+    ApplicationRecord.transaction do
       @user.save! && @user.api_keys.create!
     end
 
-    if result
-      login(params[:email], params[:password])
-      redirect_to mypage_path, notice: 'User was successfully created.'
-    else
-      render :new, status: :unprocessable_entity
-    end
+    login(params[:email], params[:password])
+    redirect_to mypage_path, notice: 'User was successfully created.'
   end
 
   private
