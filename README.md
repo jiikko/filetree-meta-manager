@@ -48,7 +48,7 @@ device: "your-device-name"
 ### CLI ツールのセットアップ
 
 - brew install go
-- go run cmd/dump-filetree/main.go --version
+- cd client; go run cmd/dump-filetree/main.go --version
 
 ### テストの実行
 
@@ -58,14 +58,17 @@ device: "your-device-name"
 
 #### WEB アプリケーション
 
-- リポジトリを fork して自分でホスティングしてください
-- 本番環境でユーザを新規作成するには、環境変数 SIGNUP_ENABLED に 1 をセットしてデプロイしてください
 - https://console.cloud.google.com/security/secret-manager に以下のシークレットを作成してください
   - `filetree-meta-manager-production-database-url`: `trilogy://myuser:mypass@localhost/somedatabase`のような形式で入れる
   - `filetree-meta-manager-production-secret-key-base`: `bin/rails secret`の出力結果を入れる
 - `roles/secretmanager.secretAccessor` を持つサービスアカウントで CloudRun をデプロイする
 - 本番 DB 上に対して、 `User.create!(email: 'your-email@example.com', password: 'your-password', password_confirmation: 'your-password').tap { |x| x.api_keys.create! }` を実行して、ログインユーザを作成してください
   - `RAILS_ENV=production SECRET_KEY_BASE=1 DATABASE_URL="trilogy://myuser:mypass@localhost/somedatabase" bin/rails c`
+
+##### TIPS
+
+- リポジトリを fork して自分でホスティングしてください
+- 本番環境でユーザを新規作成するには、環境変数 SIGNUP_ENABLED に 1 をセットしてデプロイしてください
 
 #### CLI ツール
 
