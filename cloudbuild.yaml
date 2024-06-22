@@ -1,29 +1,41 @@
 steps:
-  - # Build image
-    name: gcr.io/cloud-builders/docker:latest
+  - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "--tag=gcr.io/$PROJECT_ID/filetree-meta-manager:${_TAG}", "."]
+      [
+        "build",
+        "--tag=asia-northeast1-docker.pkg.dev/$PROJECT_ID/filetree-meta-manager/${_TAG}",
+        ".",
+      ]
     id: build
-  - name: gcr.io/cloud-builders/docker
-    args: ["push", "gcr.io/$PROJECT_ID/filetree-meta-manager:${_TAG}"]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "asia-northeast1-docker.pkg.dev/$PROJECT_ID/filetree-meta-manager/${_TAG}",
+      ]
     waitFor: [build]
     id: push
+
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     args:
       - "gcloud"
       - "run"
       - "deploy"
       - "filetree-meta-manager"
-      - "--image=gcr.io/$PROJECT_ID/filetree-meta-manager:${_TAG}"
+      - "--image=asia-northeast1-docker.pkg.dev/$PROJECT_ID/filetree-meta-manager/${_TAG}"
       - "--region=asia-northeast1"
       - "--platform=managed"
       - "--allow-unauthenticated"
       - "--set-env-vars=RACK_ENV=production"
       - "--update-secrets=DATABASE_URL=filetree-meta-manager-database-url:latest"
+      - "--update-secrets=SECRET_KEY_BASE=filetree-meta-manager-secret-key-base:latest"
       - "--max-instances=1"
     waitFor: [push]
     id: deploy
 
-images: ["gcr.io/$PROJECT_ID/filetree-meta-manager:${_TAG}"]
+images:
+  ["asia-northeast1-docker.pkg.dev/$PROJECT_ID/filetree-meta-manager/${_TAG}"]
+
 substitutions:
   _TAG: latest

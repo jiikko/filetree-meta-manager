@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby file: '.ruby-version'
+ruby '3.2.2'
 
 gem 'bootsnap', require: false
 gem 'importmap-rails'

@@ -53,7 +53,10 @@
 
 - リポジトリを fork して自分でホスティングしてください
 - 本番環境でユーザを新規作成するには、環境変数 SIGNUP_ENABLED に 1 をセットしてデプロイしてください
-- TODO
+- https://console.cloud.google.com/security/secret-manager に以下のシークレットを作成してください
+  - `filetree-meta-manager-production-database-url`: `trilogy://username:password@host:port/database`のような形式で入れる
+  - `filetree-meta-manager-production-secret-key-base`: `bin/rails secret`の出力結果を入れる
+- roles/secretmanager.secretAccessor を持つサービスアカウントで CloudRun をデプロイする
 
 #### CLI ツール
 
