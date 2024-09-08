@@ -4,6 +4,8 @@
 
 ツールは CLI ツールと WEB アプリケーションの 2 つのコンポーネントから構成されています。CLI ツールはファイルツリーの収集および WEB アプリケーションへの送信を行います。WEB アプリケーションは、収集されたファイルツリーの閲覧を提供します。
 
+使う場合は、リポジトリを fork なりをして WEB アプリケーションを自分でホスティングしてください。
+
 ![image](https://github.com/jiikko/filetree-meta-manager/assets/1664497/f98cd076-ed14-4da9-80ae-d1b7d4b07444)
 
 ## 使っている技術
@@ -15,9 +17,8 @@
 
 ## チュートリアル
 
-- WEB アプリケーションでアカウントを作成
-  - WEB アプリケーションが公開されていない場合は、自分でホスティングしてください
-- API キーを取得
+- WEB アプリケーションでアカウントの作成、ログイン
+- マイページにある API キーを取得
   - WEB アプリケーションから API キーを取得してください。あとで使用します。
 - CLI ツールをダウンロード
   - https://github.com/jiikko/filetree-meta-manager/releases から、実行環境に合う最新のバイナリをダウンロードしてください
@@ -31,7 +32,7 @@
 - WEB アプリケーションでファイルツリーを閲覧
 
 ```
-# .filetree_manager_config.yaml の例
+# 設定ファイル(.filetree_manager_config.yaml) の例
 url: http://localhost:3000
 api_key: XXXXXXXXXXXXXXX
 device: "your-device-name"
@@ -39,13 +40,13 @@ device: "your-device-name"
 
 ## 開発者向け情報
 
-### サーバのセットアップ
+### 開発環境でサーバのセットアップ
 
 - brew install mysql rbenv
 - rbenv install `cat .ruby-version`
 - bin/rails db:drop db:create db:migrate
 
-### CLI ツールのセットアップ
+### 開発環境で CLI ツールのセットアップ
 
 - brew install go
 - cd client; go run cmd/dump-filetree/main.go --version
@@ -54,21 +55,20 @@ device: "your-device-name"
 
 - `bin/rspec`
 
-### デプロイメント
+### 本番環境へのデプロイメント
 
 #### WEB アプリケーション
 
-- https://console.cloud.google.com/security/secret-manager に以下のシークレットを作成してください
-  - `filetree-meta-manager-production-database-url`: `trilogy://myuser:mypass@localhost/somedatabase`のような形式で入れる
-  - `filetree-meta-manager-production-secret-key-base`: `bin/rails secret`の出力結果を入れる
-- `roles/secretmanager.secretAccessor` を持つサービスアカウントで CloudRun をデプロイする
-- 本番 DB 上に対して、 `User.create!(email: 'your-email@example.com', password: 'your-password', password_confirmation: 'your-password').tap { |x| x.api_keys.create! }` を実行して、ログインユーザを作成してください
-  - `RAILS_ENV=production SECRET_KEY_BASE=1 DATABASE_URL="trilogy://myuser:mypass@localhost/somedatabase" bin/rails c`
-
-##### TIPS
-
-- リポジトリを fork して自分でホスティングしてください
-- 本番環境でユーザを新規作成するには、環境変数 SIGNUP_ENABLED に 1 をセットしてデプロイしてください
+- 初回セットアップ
+  - https://console.cloud.google.com/security/secret-manager に以下のシークレットを作成してください
+    - `filetree-meta-manager-production-database-url`: `trilogy://myuser:mypass@localhost/somedatabase`のような形式で入れる
+    - `filetree-meta-manager-production-secret-key-base`: `bin/rails secret`の出力結果を入れる
+  - `roles/secretmanager.secretAccessor` を持つサービスアカウントで CloudRun をデプロイする
+  - 本番 DB 上に対して、 `User.create!(email: 'your-email@example.com', password: 'your-password', password_confirmation: 'your-password').tap { |x| x.api_keys.create! }` を実行して、ログインユーザを作成してください
+    - `RAILS_ENV=production SECRET_KEY_BASE=1 DATABASE_URL="trilogy://myuser:mypass@localhost/somedatabase" bin/rails c`
+    - 本番環境でユーザを新規作成するには、環境変数 SIGNUP_ENABLED に 1 をセットしてデプロイしてください
+- デプロイするには、以下のコマンドを実行してください
+  - `bin/deploy-production`
 
 #### CLI ツール
 
